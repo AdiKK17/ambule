@@ -41,12 +41,12 @@ class _HomePage extends State<HomePage> {
 
     try {
       currentLocation = await Location().getLocation();
-      coordinates = "${currentLocation.latitude.toString()} , ${currentLocation.longitude.toString()}";
+      coordinates =
+          "${currentLocation.latitude.toString()} , ${currentLocation.longitude.toString()}";
       print(currentLocation.latitude);
       print(currentLocation.longitude);
     } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-      }
+      if (e.code == 'PERMISSION_DENIED') {}
       currentLocation = null;
     }
   }
@@ -59,12 +59,19 @@ class _HomePage extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(model.userEmail),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              model.logout();
+            },
+            icon: Icon(Icons.all_out),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepOrange,
-        child: Icon(Icons.send),
-        onPressed: () => _launchURL()
-      ),
+          backgroundColor: Colors.deepOrange,
+          child: Icon(Icons.send),
+          onPressed: () => _launchURL()),
       body: Container(
         child: SingleChildScrollView(
           child: Column(
@@ -83,7 +90,9 @@ class _HomePage extends State<HomePage> {
                   )
                 ],
               ),
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -97,6 +106,18 @@ class _HomePage extends State<HomePage> {
                   )
                 ],
               ),
+              SizedBox(
+                height: 100,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: () {},
+                    child: Text("click"),
+                  ),
+                ],
+              )
             ],
           ),
         ),
