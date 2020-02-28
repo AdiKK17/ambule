@@ -103,7 +103,10 @@ class _HomePage extends State<HomePage> {
       ) {
     return GestureDetector(
       onTap: () {
-        Provider.of<Auth>(context).store(level, coordinates);
+        if(level == "SOS")
+        Provider.of<Auth>(context,listen: false).store(level, coordinates,1);
+        else
+        Provider.of<Auth>(context,listen: false).store(level, coordinates,0);
         _launchURL();
       },
       child: Container(
