@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:provider/provider.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'auth_provider.dart';
@@ -10,7 +9,6 @@ import 'auth_provider.dart';
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _HomePage();
   }
 }
@@ -21,8 +19,6 @@ class _HomePage extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     _getLocation();
     super.initState();
   }
@@ -42,7 +38,7 @@ class _HomePage extends State<HomePage> {
     try {
       currentLocation = await Location().getLocation();
       coordinates =
-          "${currentLocation.latitude.toString()} , ${currentLocation.longitude.toString()}";
+      "${currentLocation.latitude.toString()} , ${currentLocation.longitude.toString()}";
       print(currentLocation.latitude);
       print(currentLocation.longitude);
     } on PlatformException catch (e) {
@@ -54,11 +50,9 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<Auth>(context);
-
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text(model.userEmail),
+        title: Text("Patient's Condition"),
         actions: <Widget>[
           IconButton(
             onPressed: () {
@@ -73,52 +67,68 @@ class _HomePage extends State<HomePage> {
           child: Icon(Icons.send),
           onPressed: () => _launchURL()),
       body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RaisedButton(
-                    onPressed: () {},
-                    child: Text("click"),
-                  ),
-                  RaisedButton(
-                    onPressed: () {},
-                    child: Text("click"),
-                  )
-                ],
+        padding: EdgeInsets.symmetric(
+          horizontal: 15.0,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Report Patient\'s Condition',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RaisedButton(
-                    onPressed: () {},
-                    child: Text("click"),
-                  ),
-                  RaisedButton(
-                    onPressed: () {},
-                    child: Text("click"),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 100,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                    onPressed: () {},
-                    child: Text("click"),
-                  ),
-                ],
-              )
-            ],
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            levelButton('Level 1'),
+            levelButton('Level 2'),
+            levelButton('Level 3'),
+            levelButton('SOS'),
+            SizedBox(
+              height: 60.0,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget levelButton(
+      String level,
+      ) {
+    return GestureDetector(
+      onTap: () {
+        Provider.of<Auth>(context).store(level, coordinates);
+        _launchURL();
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(
+          vertical: 10.0,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.all(
+            Radius.circular(10.0),
+          ),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 15.0,
+          vertical: 15.0,
+        ),
+        child: Center(
+          child: Text(
+            level,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 26.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

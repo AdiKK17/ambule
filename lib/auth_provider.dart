@@ -184,4 +184,19 @@ class Auth with ChangeNotifier {
     final expiryTime = _expiryDate.difference(DateTime.now()).inSeconds;
     _authTimer = Timer(Duration(seconds: expiryTime), logout);
   }
+
+  Future<void> store(String request,String coordinates) async {
+    final url = "https://ambule-87e50.firebaseio.com/requests.json";
+
+    final response = await http.post(url,body: json.encode({
+      "request": request,
+      "coordinates": coordinates,
+    }));
+
+    final responseData = json.decode(response.body);
+
+    print(responseData);
+  }
+
+
 }
